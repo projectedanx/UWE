@@ -1,4 +1,3 @@
-
 # 🗺️ Project Roadmap
 
 This document outlines the future direction and long-term goals for the Unified Word Explorer.
@@ -56,3 +55,7 @@ To create the most insightful and intuitive tool for linguistic exploration, ble
 -   **[Customizable Dashboard]**
     -   **Goal:** Give users control over their workspace.
     -   **Features:** Allow users to drag, drop, resize, and hide panels to create a layout that suits their workflow.
+
+-   **[Shareable Session URLs]**
+    -   **Goal:** Allow users to share their findings with others.
+    -   **Implementation:** Generate a unique URL that saves the state of a search, enabling collaboration and easy sharing of linguistic discoveries.
