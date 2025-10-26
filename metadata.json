@@ -1,0 +1,5 @@
+{
+  "name": "Unified Word Explorer",
+  "description": "A comprehensive dashboard for exploring words. It provides morphological variations (prefixes/suffixes), semantic relationships from ConceptNet, structured knowledge from Wikipedia, synonyms/antonyms, a conceptual blender, and a word influence meter, all visualized in an interactive graph.",
+  "requestFramePermissions": []
+}
