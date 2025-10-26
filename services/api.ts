@@ -23,31 +23,26 @@ export class ApiError extends Error {
  * @throws {Error} If the network request fails, the response is empty, or JSON parsing fails.
  */
 const fetchJson = async <T>(url: string): Promise<T> => {
+  let res: Response;
   try {
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new ApiError(`API request failed with status ${res.status}`, res.status);
-    }
-    const text = await res.text();
-    // Handle cases where APIs return empty strings for no results
-    if (!text) {
-        // We can throw a specific error or return a default value.
-        // For this app, an empty array is a safe default for list-based APIs.
-        // We will let the specific functions handle this if needed.
-        // Here we throw to be explicit that the response was unexpected.
-        throw new Error('Received an empty response from the API.');
-    }
-    try {
-      return JSON.parse(text) as T;
-    } catch (e) {
-      throw new Error('Failed to parse a valid JSON response from the API.');
-    }
+    res = await fetch(url);
   } catch (error) {
-    if (error instanceof ApiError) {
-      throw error; // Re-throw our custom error
-    }
-    // Catch network errors from fetch itself
     throw new Error('A network error occurred. Please check your connection.');
+  }
+
+  if (!res.ok) {
+    throw new ApiError(`API request failed with status ${res.status}`, res.status);
+  }
+
+  const text = await res.text();
+  if (!text) {
+    throw new Error('Received an empty response from the API.');
+  }
+
+  try {
+    return JSON.parse(text) as T;
+  } catch (e) {
+    throw new Error('Failed to parse a valid JSON response from the API.');
   }
 };
 
