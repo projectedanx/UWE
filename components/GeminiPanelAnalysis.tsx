@@ -11,6 +11,16 @@ interface GeminiPanelAnalysisProps {
   rootWord: string;
 }
 
+/**
+ * A component that provides AI-powered analysis for a given set of data.
+ * It takes data and a prompt template, and uses the Google Gemini API to generate an analysis.
+ * @param {object} props - The component's props.
+ * @param {any} props.data - The data to be analyzed.
+ * @param {(data: string) => string} props.promptTemplate - A function that takes the formatted data and returns a prompt for the AI.
+ * @param {string} props.buttonText - The text to display on the analysis button.
+ * @param {string} props.rootWord - The root word being analyzed.
+ * @returns {JSX.Element} The rendered Gemini panel analysis component.
+ */
 const GeminiPanelAnalysis: React.FC<GeminiPanelAnalysisProps> = ({ data, promptTemplate, buttonText, rootWord }) => {
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);

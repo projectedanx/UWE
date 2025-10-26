@@ -41,11 +41,64 @@ This application relies on several free, public APIs:
 - **DictionaryAPI.dev**: For definitions, etymology, synonyms, and antonyms.
 - **Datamuse API**: For WordNet-like data and word associations.
 
-## 🏃‍♀️ How to Run
+## 🚀 Getting Started
 
-While this app is designed for a specific web-based development environment, you can run a similar project locally:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm (v6 or later)
+- A Google Gemini API key
+
+### Installation
 
 1.  **Clone the repository.**
-2.  **Install dependencies**: `npm install`
-3.  **Set up environment variables**: Create a `.env` file and add your `API_KEY` for the Google Gemini API.
-4.  **Run the development server**: `npm start`
+    ```bash
+    git clone https://github.com/your-username/unified-word-explorer.git
+    cd unified-word-explorer
+    ```
+2.  **Install dependencies.**
+    ```bash
+    npm install
+    ```
+3.  **Set up environment variables.**
+    Create a `.env` file in the root of the project and add your Google Gemini API key:
+    ```
+    API_KEY=your_gemini_api_key
+    ```
+4.  **Run the development server.**
+    ```bash
+    npm run dev
+    ```
+    The application will be available at `http://localhost:3000`.
+
+## 📂 Project Structure
+
+- **`src/`**: The main source code directory.
+  - **`components/`**: Contains all the React components.
+    - **`App.tsx`**: The main application component.
+    - **`Panel.tsx`**: A reusable collapsible panel component.
+    - **`Chatbot.tsx`**: The Gemini-powered chatbot.
+    - ...and other UI components.
+  - **`services/`**: Contains the API service for fetching data from external APIs.
+    - **`api.ts`**: Handles all the API requests and error handling.
+  - **`types.ts`**: Contains all the TypeScript type definitions.
+  - **`constants.ts`**: Contains all the constants used in the application.
+  - **`index.tsx`**: The entry point of the application.
+- **`public/`**: Contains all the public assets.
+- **`.env`**: The environment variables file.
+- **`package.json`**: The project's dependencies and scripts.
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1.  Fork the repository.
+2.  Create a new branch (`git checkout -b feature/your-feature-name`).
+3.  Make your changes.
+4.  Commit your changes (`git commit -m 'Add some feature'`).
+5.  Push to the branch (`git push origin feature/your-feature-name`).
+6.  Open a pull request.
+
+Please make sure to update tests as appropriate.

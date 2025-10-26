@@ -1,4 +1,7 @@
 
+/**
+ * Represents a generic word result from various sources.
+ */
 export interface WordResult {
   word: string;
   meaning: string;
@@ -6,11 +9,17 @@ export interface WordResult {
   category: string;
 }
 
+/**
+ * Represents an item in the search history.
+ */
 export interface HistoryItem {
   root: string;
   date: string;
 }
 
+/**
+ * Represents an edge in the ConceptNet graph.
+ */
 export interface ConceptNetEdge {
   '@id': string;
   rel: {
@@ -30,19 +39,31 @@ export interface ConceptNetEdge {
   surfaceText?: string;
 }
 
+/**
+ * Represents the response from the ConceptNet API.
+ */
 export interface ConceptNetResponse {
   edges: ConceptNetEdge[];
 }
 
+/**
+ * Represents a section in a Wikipedia article.
+ */
 export interface WikipediaSection {
   line: string;
   level: string;
 }
 
+/**
+ * Represents the parsed content of a Wikipedia article.
+ */
 export interface WikipediaParse {
   sections: WikipediaSection[];
 }
 
+/**
+ * Represents the response from the Wikipedia API.
+ */
 export interface WikipediaResponse {
   parse?: WikipediaParse;
   error?: {
@@ -51,17 +72,26 @@ export interface WikipediaResponse {
   }
 }
 
+/**
+ * Represents the response from a thesaurus API.
+ */
 export interface ThesaurusResponse {
   word: string;
   synonyms: string[];
   antonyms: string[];
 }
 
+/**
+ * Represents the result of a synonym/antonym lookup.
+ */
 export interface SynAntResult {
   synonyms: string[];
   antonyms: string[];
 }
 
+/**
+ * Represents the response from the Dictionary API.
+ */
 export interface DictionaryApiResponse {
   word: string;
   origin?: string;
@@ -76,17 +106,26 @@ export interface DictionaryApiResponse {
   }[];
 }
 
+/**
+ * Represents a word from the Datamuse API.
+ */
 export interface DatamuseWord {
     word: string;
     score: number;
 }
 
+/**
+ * Represents the result of a WordNet lookup.
+ */
 export interface WordNetResult {
     synonyms: string[];
     antonyms: string[];
     hypernyms: string[];
 }
 
+/**
+ * Represents a single todo item.
+ */
 export interface Todo {
   id: number;
   text: string;

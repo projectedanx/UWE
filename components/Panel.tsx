@@ -8,6 +8,16 @@ interface PanelProps {
   tooltip?: string;
 }
 
+/**
+ * A collapsible panel component with a title, icon, and tooltip.
+ * @param {object} props - The component's props.
+ * @param {string} props.title - The title of the panel.
+ * @param {React.ReactNode} props.children - The content of the panel.
+ * @param {boolean} [props.defaultOpen=false] - Whether the panel should be open by default.
+ * @param {React.ReactNode} [props.icon] - An optional icon to display next to the title.
+ * @param {string} [props.tooltip] - An optional tooltip to display on hover.
+ * @returns {JSX.Element} The rendered panel component.
+ */
 const Panel: React.FC<PanelProps> = ({ title, children, defaultOpen = false, icon, tooltip }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 

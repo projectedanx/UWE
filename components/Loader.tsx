@@ -1,5 +1,9 @@
 import React from 'react';
 
+/**
+ * A simple spinning loader component.
+ * @returns {JSX.Element} The rendered SVG loader.
+ */
 const Loader: React.FC = () => {
   return (
     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -9,6 +13,12 @@ const Loader: React.FC = () => {
   );
 };
 
+/**
+ * A full-screen loader component that overlays the entire page.
+ * @param {object} props - The component's props.
+ * @param {string} [props.text] - Optional text to display below the loader.
+ * @returns {JSX.Element} The rendered full-screen loader.
+ */
 export const FullScreenLoader: React.FC<{ text?: string }> = ({ text = "Loading..." }) => {
   return (
     <div className="fixed inset-0 bg-slate-900 flex flex-col items-center justify-center z-50">

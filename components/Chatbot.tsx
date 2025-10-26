@@ -9,6 +9,11 @@ interface Message {
   text: string;
 }
 
+/**
+ * A chatbot component that interacts with the Google Gemini API.
+ * It maintains a conversation history and allows users to send messages to the model.
+ * @returns {JSX.Element} The rendered chatbot component.
+ */
 const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([{ role: 'model', text: 'Hello! How can I help you today?' }]);
   const [input, setInput] = useState('');

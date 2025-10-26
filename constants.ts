@@ -1,3 +1,6 @@
+/**
+ * A dictionary of common prefixes with their meanings and categories.
+ */
 export const PREFIXES: { [key: string]: { meaning: string; category: string } } = {
   bio: { meaning: "life, biological", category: "Scientific" },
   co: { meaning: "together, joint", category: "Cooperative" },
@@ -14,12 +17,18 @@ export const PREFIXES: { [key: string]: { meaning: string; category: string } } 
   special: { meaning: "specific, unique", category: "Law Enforcement" }
 };
 
+/**
+ * A dictionary of common suffixes with their meanings and categories.
+ */
 export const SUFFIXES: { [key: string]: { meaning: string; category: string } } = {
   cy: { meaning: "state or quality (agency)", category: "Abstract" },
   ive: { meaning: "having the nature of (agentive)", category: "Descriptive" },
   hood: { meaning: "state of being (agenthood)", category: "Abstract" }
 };
 
+/**
+ * A list of words for the "Word of the Day" feature.
+ */
 export const WORD_OF_THE_DAY_LIST: string[] = [
   'ephemeral', 'sonder', 'eloquence', 'ineffable', 'petrichor',
   'serendipity', 'limerence', 'mellifluous', 'hiraeth', 'nefarious',

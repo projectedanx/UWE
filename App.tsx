@@ -27,8 +27,8 @@ type ApiErrors = {
 
 /**
  * Safely extracts an error message from a caught exception.
- * @param error The caught exception, of type `unknown`.
- * @returns A string representing the error message.
+ * @param {unknown} error - The caught exception.
+ * @returns {string} A string representing the error message.
  */
 function getErrorMessage(error: unknown): string {
     if (error instanceof Error) {
@@ -40,7 +40,12 @@ function getErrorMessage(error: unknown): string {
     return 'An unknown error occurred. Check the console for details.';
 }
 
-
+/**
+ * The main application component for the Unified Word Explorer.
+ * It manages the application's state, fetches data from various APIs,
+ * and renders the user interface.
+ * @returns {JSX.Element} The rendered application.
+ */
 function App() {
   const [rootWord, setRootWord] = useState(() => WORD_OF_THE_DAY_LIST[Math.floor(Math.random() * WORD_OF_THE_DAY_LIST.length)]);
   const [morphologyResults, setMorphologyResults] = useState<WordResult[]>([]);
@@ -518,12 +523,26 @@ function App() {
   );
 }
 
+/**
+ * A component that displays an error message in a styled box.
+ * @param {object} props - The component's props.
+ * @param {string} props.message - The error message to display.
+ * @returns {JSX.Element} The rendered error message component.
+ */
 const ErrorMessage: React.FC<{ message: string }> = ({ message }) => (
   <div className="text-red-300 bg-red-900/30 p-3 rounded-md border border-red-700/50">
     {message}
   </div>
 );
 
+/**
+ * A memoized component that displays a list of word results in a table.
+ * It can also display an error message if one is provided.
+ * @param {object} props - The component's props.
+ * @param {WordResult[]} props.results - The list of word results to display.
+ * @param {string | null} [props.error] - An optional error message to display instead of the list.
+ * @returns {JSX.Element} The rendered list of words or an error message.
+ */
 const WordList = React.memo(({ results, error }: { results: WordResult[]; error?: string | null }) => {
   if (error) {
     return <ErrorMessage message={error} />;
