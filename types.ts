@@ -86,3 +86,9 @@ export interface WordNetResult {
     antonyms: string[];
     hypernyms: string[];
 }
+
+export interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+}
