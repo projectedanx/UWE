@@ -13,6 +13,7 @@ import Chatbot from './components/Chatbot';
 import ThinkingMode from './components/ThinkingMode';
 import GeminiPanelAnalysis from './components/GeminiPanelAnalysis';
 import ComparativeAnalysis from './components/ComparativeAnalysis';
+import TodoList from './components/TodoList';
 
 // Define a type for our specific API errors
 type ApiErrors = {
@@ -505,6 +506,11 @@ function App() {
            </div>
            <div className="lg:col-span-3">
               <ComparativeAnalysis />
+           </div>
+           <div className="lg:col-span-3">
+            <Panel title="Todo List" defaultOpen={false} tooltip="A simple todo list to keep track of your tasks.">
+              <TodoList />
+            </Panel>
            </div>
         </main>
       </div>
