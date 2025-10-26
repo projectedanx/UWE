@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { WordResult, SynAntResult, WordNetResult } from '../types';
 
@@ -9,6 +10,7 @@ interface UnifiedWordTreeProps {
   synAntResults: SynAntResult;
   wordNetResults: WordNetResult;
   associations: string[];
+  etymology: string | null;
   isLoading: boolean;
 }
 
@@ -20,7 +22,8 @@ const colors = {
   synonym: 'text-teal-400',
   antonym: 'text-red-400',
   wordnet: 'text-yellow-400',
-  associations: 'text-pink-400'
+  associations: 'text-pink-400',
+  etymology: 'text-stone-400',
 };
 
 const WordTreeSkeleton: React.FC = () => (
@@ -44,8 +47,27 @@ const WordTreeSkeleton: React.FC = () => (
   </div>
 );
 
+const smartTruncate = (text: string, maxLength: number): string => {
+  if (text.length <= maxLength) {
+    return text;
+  }
+  // Trim the string to the maximum length to find the last space
+  let truncatedText = text.slice(0, maxLength);
+  const lastSpaceIndex = truncatedText.lastIndexOf(' ');
 
-const UnifiedWordTree: React.FC<UnifiedWordTreeProps> = ({ root, morphologyResults, conceptNetResults, wikiSections, synAntResults, wordNetResults, associations, isLoading }) => {
+  // If a space is found, truncate there to avoid cutting a word.
+  if (lastSpaceIndex > 0) {
+    truncatedText = truncatedText.slice(0, lastSpaceIndex);
+  } else {
+    // No space found, so we hard truncate at maxLength - 3 to make room for '...'
+    truncatedText = text.slice(0, maxLength - 3);
+  }
+  
+  return `${truncatedText}...`;
+};
+
+
+const UnifiedWordTree: React.FC<UnifiedWordTreeProps> = ({ root, morphologyResults, conceptNetResults, wikiSections, synAntResults, wordNetResults, associations, etymology, isLoading }) => {
   const [selected, setSelected] = useState<{ type: string; id: string } | null>(null);
   const [tooltip, setTooltip] = useState<{ content: string; top: number; left: number } | null>(null);
 
@@ -83,7 +105,7 @@ const UnifiedWordTree: React.FC<UnifiedWordTreeProps> = ({ root, morphologyResul
       setTooltip(null);
   };
   
-  const hasData = morphologyResults.length > 0 || conceptNetResults.length > 0 || wikiSections.length > 0 || synAntResults.synonyms.length > 0 || synAntResults.antonyms.length > 0 || wordNetResults.synonyms.length > 0 || wordNetResults.antonyms.length > 0 || wordNetResults.hypernyms.length > 0 || associations.length > 0;
+  const hasData = morphologyResults.length > 0 || conceptNetResults.length > 0 || wikiSections.length > 0 || synAntResults.synonyms.length > 0 || synAntResults.antonyms.length > 0 || wordNetResults.synonyms.length > 0 || wordNetResults.antonyms.length > 0 || wordNetResults.hypernyms.length > 0 || associations.length > 0 || etymology;
 
   if (isLoading) {
     return <WordTreeSkeleton />;
@@ -115,12 +137,13 @@ const UnifiedWordTree: React.FC<UnifiedWordTreeProps> = ({ root, morphologyResul
           const id = `${type}-${i}`;
           const isSelected = selected?.id === id;
           const label = labelExtractor(item);
-          const truncatedLabel = truncate && label.length > 60 ? `${label.substring(0, 57)}...` : label;
+          const truncatedLabel = truncate ? smartTruncate(label, 60) : label;
           return (
             <div
               key={id}
               role="button"
               tabIndex={0}
+              title={label}
               onClick={(e) => handleNodeClick(e, type, id, detailExtractor(item))}
               onKeyDown={(e) => handleKeyDown(e, type, id, detailExtractor(item))}
               className={`pl-8 ${colorClass} cursor-pointer hover:bg-slate-700/50 rounded-md transition-colors duration-150 ${isSelected ? 'bg-yellow-500/20' : ''}`}
@@ -138,27 +161,44 @@ const UnifiedWordTree: React.FC<UnifiedWordTreeProps> = ({ root, morphologyResul
     <div className="bg-slate-800 p-4 rounded-lg font-mono text-sm relative" onClick={() => setTooltip(null)}>
       <div className={`${colors.root} font-bold text-lg cursor-pointer`} onClick={handleRootClick}>{root}</div>
       <div className="pl-4 border-l border-slate-600">
-        {renderBranch('Morphology', morphologyResults, 'morph', colors.morphology, (r) => r.word, (r) => r.meaning)}
-        {renderBranch('ConceptNet', conceptNetResults, 'concept', colors.conceptnet, (r) => r.word, (r) => r.meaning, true)}
-        {renderBranch('Associations', associations, 'assoc', colors.associations, (a) => a, (a) => 'Associated word')}
-        {renderBranch('Wikipedia', wikiSections, 'wiki', colors.wikipedia, (s) => s, (s) => 'Wikipedia Subtopic')}
-        {renderBranch('Synonyms (Dictionary)', synAntResults.synonyms, 'syn', colors.synonym, (s) => s, (s) => 'Synonym')}
-        {renderBranch('Antonyms (Dictionary)', synAntResults.antonyms, 'ant', colors.antonym, (a) => a, (a) => 'Antonym')}
+        {etymology && (
+            <>
+                <div className={`${colors.etymology} mt-2 font-bold`}>├── Etymology</div>
+                <div
+                    key="etymology-node"
+                    role="button"
+                    tabIndex={0}
+                    title={etymology}
+                    onClick={(e) => handleNodeClick(e, 'etymology', 'etymology-node', etymology)}
+                    onKeyDown={(e) => handleKeyDown(e, 'etymology', 'etymology-node', etymology)}
+                    className={`pl-8 ${colors.etymology} cursor-pointer hover:bg-slate-700/50 rounded-md transition-colors duration-150 ${selected?.id === 'etymology-node' ? 'bg-yellow-500/20' : ''}`}
+                    aria-label={`View etymology details`}
+                >
+                    └── {smartTruncate(etymology, 60)}
+                </div>
+            </>
+        )}
+        {renderBranch('Morphology', morphologyResults, 'morph', colors.morphology, r => r.word, r => `Type: ${r.type}\nCategory: ${r.category}\n\nMeaning: ${r.meaning}`)}
+        {renderBranch('ConceptNet', conceptNetResults, 'concept', colors.conceptnet, r => r.word, r => `Full Relation: ${r.word}\n\nContext: ${r.meaning}`, true)}
+        {renderBranch('Associations', associations, 'assoc', colors.associations, a => a, a => `Associated with "${root}"`)}
+        {renderBranch('Wikipedia', wikiSections, 'wiki', colors.wikipedia, s => s, s => `Wikipedia Subtopic: ${s}`)}
+        {renderBranch('Synonyms (Dictionary)', synAntResults.synonyms, 'syn', colors.synonym, s => s, s => `A word with a similar meaning to "${root}"`)}
+        {renderBranch('Antonyms (Dictionary)', synAntResults.antonyms, 'ant', colors.antonym, a => a, a => `A word with an opposite meaning to "${root}"`)}
 
         {(wordNetResults.synonyms.length > 0 || wordNetResults.antonyms.length > 0 || wordNetResults.hypernyms.length > 0) && (
             <div className={`${colors.wordnet} mt-2 font-bold ${selected?.type.startsWith('wn') ? 'bg-slate-700/50 rounded-r-md' : ''}`}>
                 ├── WordNet
                 <div className="pl-8 border-l border-slate-700 ml-2">
-                    {renderBranch('Synonyms', wordNetResults.synonyms, 'wn-syn', colors.wordnet, s => s, s => 'WordNet Synonym')}
-                    {renderBranch('Antonyms', wordNetResults.antonyms, 'wn-ant', colors.wordnet, a => a, a => 'WordNet Antonym')}
-                    {renderBranch('Hypernyms', wordNetResults.hypernyms, 'wn-hyp', colors.wordnet, h => h, h => 'WordNet Hypernym')}
+                    {renderBranch('Synonyms', wordNetResults.synonyms, 'wn-syn', colors.wordnet, s => s, s => `WordNet Synonym for "${root}"`)}
+                    {renderBranch('Antonyms', wordNetResults.antonyms, 'wn-ant', colors.wordnet, a => a, a => `WordNet Antonym for "${root}"`)}
+                    {renderBranch('Hypernyms', wordNetResults.hypernyms, 'wn-hyp', colors.wordnet, h => h, h => `Broader concept (hypernym) for "${root}"`)}
                 </div>
             </div>
         )}
       </div>
        {tooltip && (
         <div 
-          className="absolute z-10 p-2 text-xs text-slate-100 bg-slate-900 border border-slate-600 rounded-md shadow-lg max-w-xs"
+          className="absolute z-10 p-2 text-xs text-slate-100 bg-slate-900 border border-slate-600 rounded-md shadow-lg max-w-xs whitespace-pre-wrap"
           style={{ top: `${tooltip.top}px`, left: `${tooltip.left}px` }}
         >
           {tooltip.content}

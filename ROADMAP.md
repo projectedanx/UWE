@@ -1,3 +1,4 @@
+
 # 🗺️ Project Roadmap
 
 This document outlines the future direction and long-term goals for the Unified Word Explorer.
@@ -14,6 +15,10 @@ To create the most insightful and intuitive tool for linguistic exploration, ble
     -   **Status:** ✅ **Complete**
     -   **Goal:** Allow users to export their findings.
     -   **Implementation:** Export functionality for JSON and Markdown formats is live. This enables users to save and use the data in their own notes, research, or other applications.
+-   **[Comparative Analysis]**
+    -   **Status:** ✅ **Complete**
+    -   **Goal:** A dedicated mode to compare two words across all available metrics, with a Gemini-generated summary of their key differences and similarities.
+    -   **Implementation:** The "Comparative Analysis" panel is now integrated, allowing users to input two words and receive a Gemini-powered comparison of their morphology, lexical fields, semantic relationships, and etymology.
 
 ---
 
@@ -42,7 +47,6 @@ To create the most insightful and intuitive tool for linguistic exploration, ble
 -   **[Advanced Gemini Integration]**
     -   **Goal:** Move beyond summarization to more complex AI tasks.
     -   **Ideas:**
-        -   **Comparative Analysis:** A dedicated mode to compare two words across all available metrics, with a Gemini-generated summary of their key differences and similarities.
         -   **Creative Writing Assistant:** Use Gemini to generate poetry, prose, or metaphors based on the explored data.
 
 -   **[Multilingual Support]**

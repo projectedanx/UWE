@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { WordResult, HistoryItem, ConceptNetResponse, WikipediaResponse, SynAntResult, DictionaryApiResponse, DatamuseWord, WordNetResult } from './types';
 import { PREFIXES, SUFFIXES, WORD_OF_THE_DAY_LIST } from './constants';
@@ -11,6 +12,7 @@ import { BookOpenIcon, DnaIcon, LinkIcon, ScrollIcon, ShuffleIcon, UsersIcon, Si
 import Chatbot from './components/Chatbot';
 import ThinkingMode from './components/ThinkingMode';
 import GeminiPanelAnalysis from './components/GeminiPanelAnalysis';
+import ComparativeAnalysis from './components/ComparativeAnalysis';
 
 // Define a type for our specific API errors
 type ApiErrors = {
@@ -337,6 +339,7 @@ function App() {
                 synAntResults={synAntResults}
                 wordNetResults={wordNetResults}
                 associations={associations}
+                etymology={etymology}
                 isLoading={isLoading}
               />
             </Panel>
@@ -351,6 +354,12 @@ function App() {
             </Panel>
             <Panel title="Semantic Relationships (ConceptNet)" icon={<LinkIcon/>} tooltip="Discover semantic relationships from the ConceptNet graph.">
               <WordList results={conceptNetResults} error={apiErrors.conceptNet} />
+              <GeminiPanelAnalysis
+                rootWord={rootWord}
+                data={conceptNetResults}
+                promptTemplate={(data) => `Analyze the following semantic relationships for the word '${rootWord}' from ConceptNet:\n\n${data}\n\nSummarize the key roles and connections this word has based on these relationships. What kind of entity or concept does it appear to be?`}
+                buttonText="Analyze Semantics with Gemini"
+              />
             </Panel>
           </div>
           <div className="lg:col-span-1 space-y-6">
@@ -394,6 +403,16 @@ function App() {
                     {wordNetResults.hypernyms.length > 0 ? <ul className="list-disc list-inside text-slate-300 space-y-1">{wordNetResults.hypernyms.map((h, i) => <li key={i}>{h}</li>)}</ul> : <p className="text-slate-400">No hypernyms found.</p>}
                   </div>
                 )}
+                 <GeminiPanelAnalysis
+                    rootWord={rootWord}
+                    data={
+                        (wordNetResults.synonyms.length > 0 || wordNetResults.antonyms.length > 0 || wordNetResults.hypernyms.length > 0)
+                        ? `Synonyms: ${wordNetResults.synonyms.join(', ') || 'N/A'}\nAntonyms: ${wordNetResults.antonyms.join(', ') || 'N/A'}\nHypernyms: ${wordNetResults.hypernyms.join(', ') || 'N/A'}`
+                        : ""
+                    }
+                    promptTemplate={(data) => `Analyze the following WordNet relationships for '${rootWord}':\n\n${data}\n\nExplain how these words define the semantic space of the root word. What do the hypernyms tell us about its classification and abstract category?`}
+                    buttonText="Analyze Relationships with Gemini"
+                />
              </Panel>
              <Panel title="Word Associations" icon={<ShareIcon/>} tooltip="See words commonly used together with the root word.">
                 {apiErrors.associations ? <ErrorMessage message={apiErrors.associations} /> : (
@@ -403,6 +422,12 @@ function App() {
                         </ul>
                     ) : <p className="text-slate-400">No associations found.</p>
                 )}
+                <GeminiPanelAnalysis
+                    rootWord={rootWord}
+                    data={associations}
+                    promptTemplate={(data) => `Given the root word '${rootWord}' and its common associations: ${data}, write three distinct example sentences that demonstrate the typical contexts in which '${rootWord}' is used with these associated words.`}
+                    buttonText="Generate Examples with Gemini"
+                />
             </Panel>
              <Panel title="Etymology & Origin" icon={<ScrollIcon/>} tooltip="Uncover the historical origin and evolution of the word.">
                {isEtymologyLoading ? (
@@ -416,6 +441,12 @@ function App() {
                ) : (
                  <p className="text-slate-400">No etymology information found for this word.</p>
                )}
+                <GeminiPanelAnalysis
+                    rootWord={rootWord}
+                    data={etymology}
+                    promptTemplate={(data) => `Elaborate on the etymology of the word '${rootWord}'. Here is the known origin: ${data}. Provide more historical context, related words that share the same root, and explain how its meaning might have evolved over time.`}
+                    buttonText="Elaborate with Gemini"
+                />
             </Panel>
             <Panel title="Wikipedia Subtopics" icon={<BookOpenIcon/>} tooltip="View the table of contents from the word's Wikipedia page.">
               {apiErrors.wikipedia ? <ErrorMessage message={apiErrors.wikipedia} /> : (
@@ -425,6 +456,12 @@ function App() {
                   </ul>
                 ) : <p className="text-slate-400">No subtopics found for this word.</p>
               )}
+              <GeminiPanelAnalysis
+                    rootWord={rootWord}
+                    data={wikiSections}
+                    promptTemplate={(data) => `Based on the following Wikipedia subtopics for the word '${rootWord}', provide a concise summary of what the article is likely about:\n\n${data}\n\nWhat are the key themes and areas of knowledge covered?`}
+                    buttonText="Summarize with Gemini"
+                />
             </Panel>
              <Panel title="Search History" icon={<UsersIcon/>} tooltip="Your recent explorations.">
               {history.length > 0 ? (
@@ -465,6 +502,9 @@ function App() {
            </div>
            <div className="lg:col-span-3">
               <Chatbot />
+           </div>
+           <div className="lg:col-span-3">
+              <ComparativeAnalysis />
            </div>
         </main>
       </div>
