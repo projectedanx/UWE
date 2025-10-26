@@ -8,6 +8,15 @@ const NEGATIVE_WORDS = new Set(["toxic", "catastrophic", "devastating", "awful",
 
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, n));
 
+/**
+ * A component that displays a labeled progress bar.
+ * @param {object} props - The component's props.
+ * @param {string} props.label - The label for the bar.
+ * @param {number} props.value - The current value of the bar.
+ * @param {number} [props.max=5] - The maximum value of the bar.
+ * @param {string} [props.color="bg-cyan-500"] - The color of the bar.
+ * @returns {JSX.Element} The rendered bar component.
+ */
 const Bar: React.FC<{ label: string; value: number; max?: number; color?: string }> = ({ label, value, max = 5, color = "bg-cyan-500" }) => {
   const pct = (value / max) * 100;
   return (
@@ -23,6 +32,10 @@ const Bar: React.FC<{ label: string; value: number; max?: number; color?: string
   );
 };
 
+/**
+ * A heuristic-based tool to score a word's "influence" based on intensity, polarity, frequency, and persuasiveness.
+ * @returns {JSX.Element} The rendered word influence meter component.
+ */
 const WordInfluenceMeter: React.FC = () => {
   const [word, setWord] = useState("");
 

@@ -4,6 +4,11 @@ import { ConceptNetEdge, ConceptNetResponse } from '../types';
 import Panel from './Panel';
 import Loader from './Loader';
 
+/**
+ * A creative tool that combines semantic properties of two different concepts to spark new ideas.
+ * It fetches data from ConceptNet for two user-provided concepts and generates blend ideas.
+ * @returns {JSX.Element} The rendered conceptual blender component.
+ */
 const ConceptualBlender: React.FC = () => {
   const [conceptA, setConceptA] = useState("agent");
   const [conceptB, setConceptB] = useState("virus");

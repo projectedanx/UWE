@@ -4,6 +4,11 @@ import Loader from './Loader';
 import Panel from './Panel';
 import { BrainCircuitIcon } from './Icons';
 
+/**
+ * A component for handling complex queries using the Google Gemini API's "thinking mode".
+ * This mode uses a more powerful model with an extended thinking budget for deeper responses.
+ * @returns {JSX.Element} The rendered thinking mode component.
+ */
 const ThinkingMode: React.FC = () => {
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState<string | null>(null);

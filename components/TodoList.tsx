@@ -7,6 +7,14 @@ interface TodoItemProps {
   onDelete: (id: number) => void;
 }
 
+/**
+ * A component that displays a single todo item.
+ * @param {object} props - The component's props.
+ * @param {Todo} props.todo - The todo item to display.
+ * @param {(id: number) => void} props.onToggle - Function to call when the todo is toggled.
+ * @param {(id: number) => void} props.onDelete - Function to call when the todo is deleted.
+ * @returns {JSX.Element} The rendered todo item.
+ */
 const TodoItem: React.FC<TodoItemProps> = ({ todo, onToggle, onDelete }) => {
   return (
     <div className="flex items-center justify-between p-2 border-b border-slate-700">
@@ -30,6 +38,12 @@ interface AddTodoFormProps {
   onAdd: (text: string) => void;
 }
 
+/**
+ * A form for adding new todo items.
+ * @param {object} props - The component's props.
+ * @param {(text: string) => void} props.onAdd - Function to call when a new todo is added.
+ * @returns {JSX.Element} The rendered add todo form.
+ */
 const AddTodoForm: React.FC<AddTodoFormProps> = ({ onAdd }) => {
   const [text, setText] = useState('');
 
@@ -57,6 +71,10 @@ const AddTodoForm: React.FC<AddTodoFormProps> = ({ onAdd }) => {
   );
 };
 
+/**
+ * A simple todo list component.
+ * @returns {JSX.Element} The rendered todo list.
+ */
 const TodoList: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
 

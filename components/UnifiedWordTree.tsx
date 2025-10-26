@@ -26,6 +26,10 @@ const colors = {
   etymology: 'text-stone-400',
 };
 
+/**
+ * A skeleton loader for the UnifiedWordTree component.
+ * @returns {JSX.Element} The rendered skeleton loader.
+ */
 const WordTreeSkeleton: React.FC = () => (
   <div className="bg-slate-800 p-4 rounded-lg font-mono text-sm animate-pulse h-64">
     <div className="h-6 bg-slate-700 rounded w-1/3 mb-2"></div>
@@ -66,7 +70,20 @@ const smartTruncate = (text: string, maxLength: number): string => {
   return `${truncatedText}...`;
 };
 
-
+/**
+ * A component that visualizes all data gathered for a word in a hierarchical tree structure.
+ * @param {object} props - The component's props.
+ * @param {string} props.root - The root word.
+ * @param {WordResult[]} props.morphologyResults - The morphology results.
+ * @param {WordResult[]} props.conceptNetResults - The ConceptNet results.
+ * @param {string[]} props.wikiSections - The Wikipedia sections.
+ * @param {SynAntResult} props.synAntResults - The synonym and antonym results.
+ * @param {WordNetResult} props.wordNetResults - The WordNet results.
+ * @param {string[]} props.associations - The word associations.
+ * @param {string | null} props.etymology - The etymology of the word.
+ * @param {boolean} props.isLoading - Whether the data is currently loading.
+ * @returns {JSX.Element} The rendered word tree visualization.
+ */
 const UnifiedWordTree: React.FC<UnifiedWordTreeProps> = ({ root, morphologyResults, conceptNetResults, wikiSections, synAntResults, wordNetResults, associations, etymology, isLoading }) => {
   const [selected, setSelected] = useState<{ type: string; id: string } | null>(null);
   const [tooltip, setTooltip] = useState<{ content: string; top: number; left: number } | null>(null);

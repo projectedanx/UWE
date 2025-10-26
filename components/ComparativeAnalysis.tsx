@@ -10,6 +10,11 @@ import { WordResult, SynAntResult, ConceptNetResponse, DictionaryApiResponse, Da
 
 interface ComparativeAnalysisProps {}
 
+/**
+ * A component for comparing two words using the Google Gemini API.
+ * It fetches data for two words, sends it to the Gemini model for analysis, and displays the comparison.
+ * @returns {JSX.Element} The rendered comparative analysis component.
+ */
 type WordData = {
   morphology: WordResult[];
   synonyms: string[];
